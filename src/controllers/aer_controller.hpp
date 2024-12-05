@@ -734,6 +734,8 @@ Controller::make_circuit_executor(const Method method) const {
   default:
     throw std::runtime_error("Controller:Invalid simulation method");
   }
+
+  return nullptr;
 }
 
 std::vector<Method>
