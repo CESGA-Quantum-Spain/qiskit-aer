@@ -21,7 +21,6 @@
 #include <sstream>
 #include <string>
 
-#include "framework/avx2_detect.hpp"
 #include "framework/types.hpp"
 
 #ifdef _MSC_VER
@@ -1261,10 +1260,8 @@ static uint_t _naive_weight(uint_t x) {
 }
 
 #ifdef INTRINSIC_PARITY
-bool (*hamming_parity)(uint_t) = is_avx2_supported() ? &_intrinsic_parity
-                                                     : &_naive_parity;
-uint_t (*popcount)(uint_t) = is_avx2_supported() ? &_instrinsic_weight
-                                                 : &_naive_weight;
+bool (*hamming_parity)(uint_t) = &_naive_parity;
+uint_t (*popcount)(uint_t) = &_naive_weight;
 #else
 bool (*hamming_parity)(uint_t) = &_naive_parity;
 uint_t (*popcount)(uint_t) = &_naive_weight;

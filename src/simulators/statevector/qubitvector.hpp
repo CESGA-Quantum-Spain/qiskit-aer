@@ -26,7 +26,6 @@
 #include <tuple>
 #include <vector>
 
-#include "framework/avx2_detect.hpp"
 #include "framework/json.hpp"
 #include "framework/linalg/matrix_utils/vmatrix_defs.hpp"
 #include "framework/linalg/vector.hpp"
@@ -35,7 +34,6 @@
 #include "framework/utils.hpp"
 #include "simulators/statevector/indexes.hpp"
 #include "simulators/statevector/transformer.hpp"
-#include "simulators/statevector/transformer_avx2.hpp"
 
 namespace AER {
 namespace QV {
@@ -489,16 +487,8 @@ protected:
   }
 
   void set_transformer_method() {
-#if defined(GNUC_AVX2) || defined(_MSC_VER)
-    transformer_ =
-        is_avx2_supported()
-            ? std::make_unique<
-                  TransformerAVX2<std::complex<data_t> *, data_t>>()
-            : std::make_unique<Transformer<std::complex<data_t> *, data_t>>();
-#else
     transformer_ =
         std::make_unique<Transformer<std::complex<data_t> *, data_t>>();
-#endif
   }
 
   //-----------------------------------------------------------------------

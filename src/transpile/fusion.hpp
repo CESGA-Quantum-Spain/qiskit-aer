@@ -17,7 +17,6 @@
 
 #include <chrono>
 
-#include "framework/avx2_detect.hpp"
 #include "framework/config.hpp"
 #include "simulators/superoperator/superoperator_state.hpp"
 #include "simulators/unitary/unitary_state.hpp"
@@ -1116,21 +1115,6 @@ double CostBasedFusion::estimate_cost(const std::vector<op_t> &ops,
   if (configured_cost > 0)
     return configured_cost;
 
-  if (is_avx2_supported()) {
-    switch (fusion_qubits.size()) {
-    case 1:
-      // [[ falling through :) ]]
-    case 2:
-      return 1.0;
-    case 3:
-      return 1.1;
-    case 4:
-      return 3;
-    default:
-      return pow(cost_factor,
-                 (double)std::max(fusion_qubits.size() - 2, size_t(1)));
-    }
-  }
   return pow(cost_factor,
              (double)std::max(fusion_qubits.size() - 1, size_t(1)));
 }
